@@ -1111,7 +1111,10 @@ mips-sony-bsd|mips-sony-newsos4)
 esac
 
 AC_MSG_CHECKING([compiler and flags for sanity])
-AC_RUN_IFELSE([AC_LANG_PROGRAM([[ #include <stdio.h> ]], [[ exit(0); ]])],
+AC_RUN_IFELSE([AC_LANG_PROGRAM([[
+#include <stdio.h>
+#include <stdlib.h>
+]], [[ exit(0); ]])],
 	[	AC_MSG_RESULT([yes]) ],
 	[
 		AC_MSG_RESULT([no])
@@ -1349,6 +1352,7 @@ AC_MSG_CHECKING([whether struct dirent allocates space for d_name])
 AC_RUN_IFELSE(
 	[AC_LANG_PROGRAM([[
 #include <sys/types.h>
+#include <stdlib.h>
 #include <dirent.h>]],
 	[[
 	struct dirent d;
@@ -1944,7 +1948,10 @@ AC_CHECK_FUNC([getpagesize],
 if test "x$ac_cv_func_snprintf" = "xyes" ; then
 	AC_MSG_CHECKING([whether snprintf correctly terminates long strings])
 	AC_RUN_IFELSE(
-		[AC_LANG_PROGRAM([[ #include <stdio.h> ]],
+		[AC_LANG_PROGRAM([[
+#include <stdio.h>
+#include <stdlib.h>
+]],
 		[[
 	char b[5];
 	snprintf(b,5,"123456789");
@@ -2346,6 +2353,7 @@ if test "x$openssl" = "xyes" ; then
 	AC_RUN_IFELSE(
 		[AC_LANG_PROGRAM([[
 	#include <stdio.h>
+	#include <stdlib.h>
 	#include <string.h>
 	#include <openssl/opensslv.h>
 	#define DATA "conftest.sslincver"
@@ -2380,6 +2388,7 @@ if test "x$openssl" = "xyes" ; then
 	AC_RUN_IFELSE(
 		[AC_LANG_PROGRAM([[
 	#include <stdio.h>
+	#include <stdlib.h>
 	#include <string.h>
 	#define OPENSSL_API_COMPAT 0x10000000L
 	#include <openssl/opensslv.h>
@@ -3186,6 +3195,7 @@ if test -z "$have_llong_max"; then
 	AC_RUN_IFELSE(
 		[AC_LANG_PROGRAM([[
 #include <stdio.h>
+#include <stdlib.h>
 /* Why is this so damn hard? */
 #ifdef __GNUC__
 # undef __GNUC__
@@ -3644,6 +3654,7 @@ dnl test snprintf (broken on SCO w/gcc)
 	AC_RUN_IFELSE(
 		[AC_LANG_SOURCE([[
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #ifdef HAVE_SNPRINTF
 main()
@@ -3701,6 +3712,7 @@ AC_CHECK_MEMBER([struct __res_state.retrans], [], [AC_DEFINE([__res_state], [sta
 	[Define if we don't have struct __res_state in resolv.h])],
 [[
 #include <stdio.h>
+#include <stdlib.h>
 #if HAVE_SYS_TYPES_H
 # include <sys/types.h>
 #endif
@@ -3744,6 +3756,7 @@ AC_CACHE_CHECK([for msg_accrights field in struct msghdr],
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/uio.h>
+#include <stdlib.h>
 		]], [[
 #ifdef msg_accrights
 #error "msg_accrights is a macro"
@@ -3804,6 +3817,7 @@ AC_CACHE_CHECK([for msg_control field in struct msghdr],
 	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <stdlib.h>
 #include <sys/uio.h>
 		]], [[
 #ifdef msg_control
@@ -3825,7 +3839,7 @@ if test "x$ac_cv_have_control_in_msghdr" = "xyes" ; then
 fi
 
 AC_CACHE_CHECK([if libc defines __progname], ac_cv_libc_defines___progname, [
-	AC_LINK_IFELSE([AC_LANG_PROGRAM([[]],
+	AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <stdio.h>]],
 		[[ extern char *__progname; printf("%s", __progname); ]])],
 	[ ac_cv_libc_defines___progname="yes" ],
 	[ ac_cv_libc_defines___progname="no" 
@@ -3897,7 +3911,7 @@ if test "x$ac_cv_have_getopt_optreset" = "xyes" ; then
 fi
 
 AC_CACHE_CHECK([if libc defines sys_errlist], ac_cv_libc_defines_sys_errlist, [
-	AC_LINK_IFELSE([AC_LANG_PROGRAM([[]],
+	AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <stdio.h>]],
 [[ extern const char *const sys_errlist[]; printf("%s", sys_errlist[0]);]])],
 	[ ac_cv_libc_defines_sys_errlist="yes" ],
 	[ ac_cv_libc_defines_sys_errlist="no" 
@@ -3910,7 +3924,7 @@ fi
 
 
 AC_CACHE_CHECK([if libc defines sys_nerr], ac_cv_libc_defines_sys_nerr, [
-	AC_LINK_IFELSE([AC_LANG_PROGRAM([[]],
+	AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <stdio.h>]],
 [[ extern int sys_nerr; printf("%i", sys_nerr);]])],
 	[ ac_cv_libc_defines_sys_nerr="yes" ],
 	[ ac_cv_libc_defines_sys_nerr="no" 
@@ -4220,6 +4234,7 @@ AC_ARG_WITH([maildir],
 	    AC_RUN_IFELSE(
 		[AC_LANG_PROGRAM([[
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #ifdef HAVE_PATHS_H
 #include <paths.h>
@@ -4366,6 +4381,7 @@ if test -z "$disable_shadow" ; then
 	AC_MSG_CHECKING([if the systems has expire shadow information])
 	AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <sys/types.h>
+#include <stdlib.h>
 #include <shadow.h>
 struct spwd sp;
 		]], [[ sp.sp_expire = sp.sp_lstchg = sp.sp_inact = 0; ]])],
@@ -4464,6 +4480,7 @@ otherwise scp will not work.])
 			[AC_LANG_PROGRAM([[
 /* find out what STDPATH is */
 #include <stdio.h>
+#include <stdlib.h>
 #ifdef HAVE_PATHS_H
 # include <paths.h>
 #endif
