@@ -1853,6 +1853,9 @@ AC_CHECK_FUNCS([setresuid], [
 	AC_MSG_CHECKING([if setresuid seems to work])
 	AC_RUN_IFELSE(
 		[AC_LANG_PROGRAM([[
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 #include <stdlib.h>
 #include <errno.h>
 		]], [[
@@ -1878,6 +1881,9 @@ AC_CHECK_FUNCS([setresgid], [
 		[AC_LANG_PROGRAM([[
 #include <stdlib.h>
 #include <errno.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 		]], [[
 	errno=0;
 	setresgid(0,0,0);
@@ -2042,6 +2048,9 @@ if test "x$ac_cv_func_mkdtemp" = "xyes" ; then
 AC_MSG_CHECKING([for (overly) strict mkstemp])
 AC_RUN_IFELSE(
 	[AC_LANG_PROGRAM([[
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 #include <stdlib.h>
 	]], [[
 	char template[]="conftest.mkstemp-test";
@@ -2070,6 +2079,13 @@ if test ! -z "$check_for_openpty_ctty_bug"; then
 	AC_RUN_IFELSE(
 		[AC_LANG_PROGRAM([[
 #include <stdio.h>
+#include <stdlib.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+#ifdef HAVE_PTY_H
+#include <pty.h>
+#endif
 #include <sys/fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
